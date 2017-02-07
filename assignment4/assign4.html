@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/niyuve/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment 4</title>
+<style id="jsbin-css">
+body{
+  background-color:darkgrey
+}
+
+#title{
+  background-color:grey}
+h1{
+  text-align:center;
+  color: white;}
+h2{
+  text-align:center;
+  color:white;}
+h3{
+  text-align:center;
+  color:black;}
+
+#function{
+  background-color:grey;
+  text-align:center;
+  color:white;
+  }
+#if{
+  background-color:grey;
+  text-align:center;
+  color:white;
+  }
+#array{
+  background-color:grey;
+  text-align:center;
+  color:white;
+  }
+#loop{
+    background-color:grey;
+  text-align:center;
+  color:white;
+}
+</style>
+</head>
+  <div id="title">
+  <h1>Assignment 4</h1>
+  <h2>Xingwei Weng</h2>
+  </div>
+  <hr>
+<body>
+  <div id="function">
+<p>
+  <br>
+  
+  First Name: <input type="text" id="firstname" size=5>
+  <br/>
+  Last Name:<input type="text" id="lastname" size=5>
+  <br/>
+  <button type="button" onclick="display()">Hello!</button>
+    <div id="hello">-</div>
+     
+</p>
+  </div>
+  <div id="if">
+    <p>Input your age to see if you can vote:</p>
+
+<input id="age" value="" />
+
+<button onclick="myFunction()">Try it</button>
+
+<div id="result"></div>
+    <br>
+    
+  </div>
+  
+  <br>
+  <div id="array">
+   Enter State Alphabetic Number:
+    <input type="text" id="statenum" style="border: 2; font-weight: bold;" onChange="state()" value="" size="5"/>
+<div id="statename">-</div>
+  </div>
+  
+  <br>
+  <h3>Loop Countdown from 5</h3>
+  <div id="loop"></div>   
+
+
+  
+  
+  
+  
+  
+  
+  
+<script id="jsbin-javascript">
+function display(){
+  firstname = document.getElementById("firstname").value;
+  lastname = document.getElementById("lastname").value;
+  document.getElementById("hello").innerHTML="Hello"+" "+firstname+" "+lastname;
+}
+
+var states =["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
+
+
+function state(){
+	  x = document.getElementById("statenum").value;
+	  document.getElementById("statename").innerHTML = states[x-1];
+}
+
+var text = "";
+var i;
+for (i = 5; i > 0; i--) {
+    text += "The number is " + i + "<br>";
+}
+document.getElementById("loop").innerHTML = text;
+
+function myFunction() {
+    var age, voteable;
+    age = Number(document.getElementById("age").value);
+    if (isNaN(age)) {
+        voteable = "Error in input";
+    } else {
+        voteable = (age < 18) ? "No" : "Yes";
+    }
+    document.getElementById("result").innerHTML = voteable;
+}
+</script>
+</body>
+</html>
