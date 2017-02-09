@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/muzehef/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta name="description" content="Assignment5">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment5</title>
+<style id="jsbin-css">
+body{
+  background-color:lightblue;
+}
+h3,h1{
+  text-align: center;
+}
+
+#map{
+  text-align: center; 
+  
+}
+#button{
+  text-align: center; 
+  
+}#out{
+  text-align: center; 
+  
+}
+
+#checkbox{
+  text-align: center; 
+  
+}
+#pet{
+  text-align: center; 
+  
+}
+#pets{
+  text-align: center; 
+  
+}
+#pet3{
+  text-align: center; 
+  
+}
+#text{
+  text-align: center; 
+  
+}
+</style>
+</head>
+<body>
+  <h1>Assignment 5</h1>
+  <h3>Xingwei Weng</h3>
+  <hr>
+<div id=button>
+  <h3>What part of Ames do you live?</h3>
+   <input type="radio" name="loca" value="North" id="north"> North<br>
+  <input type="radio" name="loca" value="South" id="south"> South<br>
+  <input type="radio" name="loca" value="West" id="west"> West<br>
+  <input type="radio" name="loca" value="East" id="east"> East<br>
+  <input type="radio" name="loca" value="I don't live in Ames" id="none"> I don't live in Ames<br><br>
+<button type="button" onclick="part()">Submit</button>
+</div><br>
+  <div id="out"></div>
+  <hr>
+  
+  <div id=checkbox>
+    <h3>What kind of pet or pets you have?</h3>
+  <input type="checkbox" name="an1" value="cat" id="cat">I have a cat
+<br>
+<input type="checkbox" name="an2" value="dog" id="dog">I have a dog 
+<br><br>
+
+    <button type="button" onclick="pet()">Submit</button><br>
+  </div>
+  <div id="pets"></div>
+  <br>
+  <div id=text>
+  I have  <input type="text" id="animal" size=6><br><br>
+  <button type="button" onclick="pet1()">Submit</button><br>
+  </div><br>
+  <div id=pet3></div>
+    <br><br>
+    
+  
+<hr>
+  
+  
+  
+  <div id="map">
+    <h3>This is the city I come from</h3>
+  <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=changzhou&key=AIzaSyDEz8_oPQCMsNb1J8Rl2Icf1QtYt0r_EvA" allowfullscreen></iframe>
+    
+  </div>
+    
+<script id="jsbin-javascript">
+function part() {
+  if (document.getElementById("north").checked) {
+  loca = document.getElementById("north").value;  
+}
+else if (document.getElementById("south").checked) {
+  loca = document.getElementById("south").value;  
+}
+else if (document.getElementById("west").checked) {
+  loca = document.getElementById("west").value;  
+}
+
+else if (document.getElementById("east").checked) {
+  loca = document.getElementById("east").value;  
+}
+else if (document.getElementById("none").checked) {
+  loca = document.getElementById("none").value;  
+}
+document.getElementById("out").innerHTML = loca;
+}
+
+
+function pet(){
+  if (document.getElementById("cat").checked === true) {
+        an1= document.getElementById("cat").value;
+    }
+  else if (document.getElementById("cat").checked === false) {
+        an1=" ";
+    }
+  if (document.getElementById("dog").checked === true) {
+        an2= document.getElementById("dog").value;
+    }
+  else if (document.getElementById("dog").checked === false) {
+        an2=" ";
+    }
+  document.getElementById("pets").innerHTML =an1+"  "+ an2;
+}
+
+function pet1(){
+  animal = document.getElementById("animal").value;
+  document.getElementById("pet3").innerHTML=animal;
+}
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
