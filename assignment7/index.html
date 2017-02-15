@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/ciloged/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment7</title>
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  
+<style id="jsbin-css">
+#container{
+  
+  position: absolute;
+  left:0;
+  top: 0;
+  bottom:0;
+  right: 0;
+  margin: auto;
+  width: 1200px;
+  height: 800px;
+  border: solid;
+  border-width:1px;
+}
+#assign7{
+  position: absolute;
+  top:0px;
+  right:0px;
+  width:1200px;
+  height:130px;
+  text-align: center;
+  background-color:wheat;
+  border-width:1px;
+
+}
+#menu{
+  position: absolute;
+  left:0px;
+  top: 130px;
+  width: 200px;
+  height: 670px;
+  background-color:lightgrey;
+  padding-left:0px;
+
+ 
+  border-width:1px;
+}
+#maps{
+  position: absolute;
+  top:130px;
+  left:200px;
+  width:1000px;
+  height:670px;
+  text-align: center;
+
+}
+
+
+
+img{
+  position: absolute;
+  left:200px;
+  top: 130px;
+  z-index:-1;
+  display: none;
+  
+}
+h2{
+  text-align: center;
+  
+}
+</style>
+</head>
+<body>
+
+  <div id="container">
+    <div id=assign7>
+      
+      <h1>Assignment 7</h1>
+      <h3>Xingwei Weng</h3>
+      
+    </div>
+    
+    <div id="menu">
+      <br><br><br><br><br>
+      <h2>Map Layers</h4>
+      
+      <input type=radio name=basemap value= 0 checked>Basemap</input>
+    <br><br>
+    <input type=radio value=1 name=basemap>Area Code</input>
+  <br><br>
+  <hr>
+  <br><br>
+  
+  <input type=checkbox value=2 class=layer>Canoe Routes</input>
+  <br><br>
+  <input type=checkbox value=3 class=layer>Iowa Boarder</input>
+  <br><br>
+  <input type=checkbox value=4 class=layer>Interstate</input>
+    
+     
+      
+    </div>
+    
+    <div id=maps>
+      
+      <img id=map0 src="https://bestlukcy.github.io/LA558/assignment3/images/basemapLandcover.png">
+      <img id=map1 src="https://bestlukcy.github.io/LA558/assignment3/images/areaCode.png">
+      <img id=map2 src="https://bestlukcy.github.io/LA558/assignment3/images/canoeRoutes.png">
+      <img id=map3 src="https://bestlukcy.github.io/LA558/assignment3/images/iowaBorder.png">
+      <img id=map4 src="https://bestlukcy.github.io/LA558/assignment3/images/Interstate.png">
+      
+      
+      
+      
+      
+    </div>
+    
+    
+    
+    
+    
+  </div>
+  
+  
+  
+  
+  
+  
+<script id="jsbin-javascript">
+
+$(function(){
+  var totalmaps=5;
+  
+  for(i=0; i<totalmaps; i++){
+    $("#map"+i).hide();
+  }
+  
+  $("#map0").show();
+  
+  $('input:radio[name=basemap]').click(function(){
+    base=$('input:radio[name=basemap]:checked').val();
+    $("#map0, #map1").hide();
+    $("#map"+base).show();
+  });
+  
+   $(".layer").change(function() {
+     x=$(this).val();
+     console.log("map"+ x);
+      $("#map" + x).toggle();
+
+   });
+
+
+});
+
+                                       
+
+</script>
+</body>
+</html>
