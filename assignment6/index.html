@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/sewulaz/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment 6</title>
+<style id="jsbin-css">
+h1,h2{
+  text-align: center;
+  
+}
+
+#title{
+  color: blue; 
+}
+
+#container{
+  
+  position: absolute;
+  left:0;
+  top: 0;
+  bottom:0;
+  right: 0;
+  margin: auto;
+  width: 1200px;
+  height: 800px;
+  border: solid;
+  border-width:1px;
+}
+#title{
+  
+  position: absolute;
+  top:0px;
+  right:0px;
+  width:1200px;
+  height:130px;
+  text-align: center;
+  background-color:Cornsilk;
+  border-width:1px;
+
+}
+#example1{
+  position: absolute;
+  top:130px;
+  left:0px;
+  width:600px;
+  height:335px;
+  text-align: center;
+  background-color:snow;
+  border-width:1px;
+  
+}
+
+#example2{
+  position: absolute;
+  top:130px;
+  right:0px;
+  width:600px;
+  height:335px;
+  text-align: center;
+  background-color:aliceblue;
+  border-width:1px;
+  
+}
+
+#example3{
+  position: absolute;
+  top:465px;
+  left:0px;
+  width:600px;
+  height:335px;
+  text-align: center;
+  background-color:Gainsboro;
+  border-width:1px;
+  
+}
+#example4{
+  position: absolute;
+  top:465px;
+  right:0px;
+  width:600px;
+  height:335px;
+  text-align: center;
+  background-color:PaleGreen;
+  border-width:1px; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+</head>
+  
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  
+<body>
+  <div id=container>
+  <div id=title>
+  <h1>Assignment 6</h1>
+    <h2>Xingwei Weng</h2>
+    
+  </div>
+ 
+  <div id=container>
+    <div id=example1>
+      <h4>Ex. 1</h4>
+      <p> Click the "Hide" button below, I will Disappear. Click The "Show" button below, I will appear.</p>
+        <br>
+      <button id="hide">Hide</button>
+      <button id="show">Show</button>
+      
+      
+    </div>
+    <br>
+    <div id=example2>    
+    <h4>Ex.2</h4>
+
+      <div id="ex2">Click the "Blue" button below to make the text blue.</div>
+        <br>
+      <button id="b2">Blue</button>
+      
+      
+    </div>
+    <br>
+    
+    <div id=example3>
+      <h4>Ex.3</h4>
+      <div class="ex3">Click the "Hightlight" button below to highlight this line.</div>
+        <br>
+      <button id="b3">Highlight</button>
+      
+      
+    </div>
+    
+    <div id=example4>
+      <h4>Ex.4</h4>
+      <p> Click the button below to fade in and out all four "Ex.#"</p>
+            <button id="b4">Fade in and Fade out</button>
+
+      
+    </div>
+    
+
+  
+  
+  
+  
+  
+  
+  
+  </div>
+<script id="jsbin-javascript">
+$(document).ready(function(){
+  
+  $("#hide").click(function(){
+    $("p").hide();
+  });
+  $("#show").click(function(){
+    $("p").show();
+  });  
+  
+});
+
+
+$(document).ready(function(){
+    $("#b2").click(function(){
+        $("#ex2").css("color","blue");
+        
+    });
+  
+});
+
+
+$(document).ready(function(){
+    $("#b3").click(function(){
+        $(".ex3").css("background-color","yellow");
+    });
+
+});
+
+$(document).ready(function(){
+    $("#b4").click(function(){
+        $("h4").fadeToggle("slow");
+     
+    });
+});
+
+
+
+</script>
+</body>
+</html>
