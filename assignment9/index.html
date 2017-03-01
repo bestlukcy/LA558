@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/xotifip/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment9</title>
+  
+  <h1>Assignment 9</h1>
+  <h2>Xingwei Weng</h2>
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  
+  <div id=container>
+  
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  </div>
+<style id="jsbin-css">
+#map {
+     width: 1000px;
+     height: 700px;
+     background-color: red;
+    position: absolute;
+  left:0;
+  top: 0;
+  bottom:0;
+  right: 0;
+  margin: auto;
+}
+
+h1,h2{
+  text-align: center;
+  
+}
+
+#container{
+  position: absolute;
+  left:0;
+  top: 0;
+  bottom:0;
+  right: 0;
+  margin: auto;
+}
+
+.mydivicon{
+  background-color: red;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<div id='map'></div>
+<script id="jsbin-javascript">
+var map = L.map('map').setView([42.02, -93.631], 13);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+var marker1=L.marker([42.007264, -93.571286],{draggable: true}).addTo(map)
+   .bindPopup("<strong>Interchange</strong> <br> <i>I-35 and US-30</i>",{
+     maxWidth: 200,
+     minWidth:150,
+     maxHeight: 30,
+     keepInView: true,
+     closeButton: true,
+     autoPanPadding: [10,10],
+     offset:[10,10],    
+     
+   })
+   ;
+
+var markerdiy= L.icon({
+  iconUrl: 'https://ndbasketball.files.wordpress.com/2013/03/10327.jpg?w=272',
+  
+  iconSize:   [20,20],
+  iconAnchor:  [9,9],
+  popupAnchor: [0,0]
+});
+
+var marker2=L.marker([42.013998,  -93.635772],{
+  opacity: 0.8,
+  icon: markerdiy,
+}).addTo(map)
+   .bindPopup("Jack Trice Stadium <img src='https://pbs.twimg.com/media/CNI7pPVVEAAEvDG.jpg' width='250px', height='160px'/>");
+   
+
+var divicon = L. divIcon({
+ iconSize: new L.Point (40,20),
+ iconAnchor: new L.Point(20,20),
+ html: 'Airport',
+ className: 'mydivicon'
+  
+});
+
+var marker3= L.marker([41.992096,-93.621712],{
+  icon: divicon,
+  
+}).addTo(map)
+   .bindPopup("Ames Municipal Airport");
+
+
+var circlemarkers=[
+  ["20", 42.010245, -93.684905, "144"],
+  ["20", 42.007168, -93.673832, "144"],
+  ["10", 42.003070, -93.644736, "146"],
+  ["10", 42.003246, -93.634222, "146"],
+  ["20", 42.004537, -93.615768, "148"],
+  ["20", 42.005287, -93.604846, "148"],
+  ["20", 42.039336, -93.569977, "113"],
+  ["20", 42.030283, -93.570964, "113"],
+  ["30", 42.012509, -93.571351, "111B"],
+  ["30", 42.002656, -93.570943, "111A"],
+];
+
+
+function getColor(d){
+  return d=='144' ? "blue" :
+    d== '146' ? "green":
+    d== '148' ? "yellow":
+    d== '113' ? 'grey':
+    'red';
+ }
+  
+  for (var i =0; i <circlemarkers.length;i++){
+    marker = new L.circleMarker([circlemarkers[i][1],circlemarkers[i][2]], {
+      radius: circlemarkers[i][0]/2,
+        fillColor: getColor(circlemarkers[i][3]),
+        color: "#blue",
+        opacity: 0.5,
+        fillOpacity: 0.5
+    })
+    .addTo(map)
+    .bindPopup("Category: "+circlemarkers[i][3]);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
