@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/xotifip/9/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment10</title>
+    <div id="container">
+      <div id =title>
+  <h1>Assignment 10</h1>
+  <h2>Xingwei Weng</h2>
+      </div>
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+
+  
+
+     
+        <div id="ex1">
+          
+    <button id="iowa"> Iowa</button>
+          <br><br>Click to zoom to entire Iowa
+        </div>
+       <div id="ex2">
+        
+    <button id="china"> Fly to my hometown </button>
+         <br><br>Click to see my hometwon
+        </div>
+        <div id="ex3">
+          
+    <button id= "zoomin"> Zoom in</button>
+          <br><br>Click to zoom in
+        </div>
+       <div id=ex4>
+        
+    <button id= "zoomout"> Zoom out</button>
+         <br><br>Click to zoom out
+        </div>
+      <div id=ex5>
+        
+    <button id= "getzoom"> Get Zoom: <div id="zoomnum"></div></button>
+        <br><br>Click to see the zoom number
+      </div>
+    
+ 
+    <div id='map'></div>
+  
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  </div>
+<style id="jsbin-css">
+#container{
+  width: 1500px;
+  height: 950px;
+  position: absolute;
+  left:0;
+  top: 0;
+  bottom:0;
+  right: 0;
+  margin: auto;
+  border: solid;
+}
+
+#map {
+     width: 1500px;
+     height: 700px;
+     background-color: red;
+    position: absolute;
+  left:0;
+  top: 10;
+  bottom:0;
+  right: 0;
+  margin: auto;
+}
+
+h1,h2{
+  text-align: center;
+  
+}
+
+#title{
+  width: 1500px;
+  height: 120px;
+  margin: auto;
+  position: absolute;
+
+  background-color:Cornsilk;
+}
+
+
+#ex1{  
+  position: absolute;
+  width: 300px;
+  height: 130px;
+  background-color:snow;
+  left:0px;
+  top: 120px;
+}
+
+#ex2{  
+  position: absolute;
+  width: 300px;
+  height: 130px;
+  background-color:aliceblue;
+  left:300px;
+  top: 120px;
+  
+}
+
+#ex3{
+  width: 300px;
+  height: 130px;
+  margin: auto;
+  background-color:Gainsboro;
+  position: absolute;
+  left:600px;
+  top: 120px;
+  margin: auto;
+  
+}
+
+#ex4{
+  width: 300px;
+  height: 130px;
+  margin: auto;
+  background-color:PaleGreen;
+  position: absolute;
+  left:900px;
+  top: 120px;
+  margin: auto;
+  
+}
+
+#ex5{
+  width: 300px;
+  height: 130px;
+  margin: auto;
+  background-color:Plum;
+  position: absolute;
+  left:1200px;
+  top: 120px;
+  margin: auto;
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<script id="jsbin-javascript">
+var map = L.map('map').setView([42.02, -93.631], 9);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+
+
+var marker1 = L.marker([42.02, -93.631]).addTo(map)
+    .bindPopup($('<a href="#"><strong> Ames</strong> </a>').click(function() {
+    alert("Hello!");
+})[0]);
+
+var marker2 = L.marker([31.778799, 119.973793]).addTo(map);
+    
+
+$(document).ready(function (){
+  
+  $('#iowa').click(function(){
+    map.setView([42.02, -93.631],7);
+    });
+  $('#china').click(function(){
+    map.flyTo([31.778799, 119.973793],12);
+    });
+  $("#zoomin").click(function(){
+    map.zoomIn(1);
+    });
+  $("#zoomout").click(function(){
+    map.zoomOut(1);
+    });
+  $("#getzoom").click(function(){
+    x= map.getZoom();
+    $("#zoomnum").html(x);
+  });
+
+});
+
+
+</script>
+</body>
+</html>
