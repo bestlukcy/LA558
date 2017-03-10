@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/jupavez/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment 12</title>
+  <h1>Assignment 12</h1>
+  <h2>Xingwei Weng</h2>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+<style id="jsbin-css">
+#map {
+     width: 1500px;
+     height: 800px;
+     background-color: red;
+    position: absolute;
+  left:0;
+  top: 1;
+  bottom:0;
+  right: 0;
+  margin: auto;
+}
+
+h1,h2{
+  text-align: center;
+  
+}
+</style>
+</head>
+  
+  
+<body>
+<div id="map"></div>
+<script id="jsbin-javascript">
+
+
+
+//basemap
+var OpenStreetMapBW = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+var OpenTopoMap = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+  var OpenStreetMap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+
+//map
+var map = L.map('map', {
+    		center: new L.LatLng(39.291797, -100.019531),
+    		zoom: 5,
+    		layers: [OpenStreetMap]
+		});
+
+
+//geojson
+var mygeojson={"type":"FeatureCollection","features":[{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"medium","marker-symbol":"marker"},"geometry":{"type":"Point","coordinates":[-112.0166015625,40.81380923056958]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"medium","marker-symbol":"marker"},"geometry":{"type":"Point","coordinates":[-115.1806640625,36.19109202182454]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"medium","marker-symbol":"marker"},"geometry":{"type":"Point","coordinates":[-110.67626953125,44.63739123445585]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"medium","marker-symbol":"marker"},"geometry":{"type":"Point","coordinates":[-111.48651123046875,36.91915611148194]}},{"type":"Feature","properties":{"marker-color":"#0000ff","marker-size":"medium","marker-symbol":"marker"},"geometry":{"type":"Point","coordinates":[-113.04931640625,36.30627216957992]}},{"type":"Feature","properties":{"stroke":"#ff0000","stroke-width":2,"stroke-opacity":1},"geometry":{"type":"LineString","coordinates":[[-115.1806640625,36.155617833818525],[-113.02734374999999,36.31512514748051],[-111.4892578125,36.932330061503144],[-112.0166015625,40.79717741518766],[-110.654296875,44.63739123445585]]}}]};
+var myStyle = {
+    "color": "red",
+    "weight": 3,
+    "opacity": 1,
+};
+var trip= L.geoJSON(mygeojson, {style: myStyle});
+
+//json
+var schools = [{
+    "name" : "Texas",
+    "lat" : "30.2849",
+    "long" : "-97.7341",
+    "iconImage" : "http://www.moderncopywriter.com/wp-content/uploads/2014/05/texas-longhorn.jpg",
+    "popupText" : "University of Texas at Austin"
+},
+{
+    "name" : "ISU",
+    "lat" : "42.0266",
+    "long" : "-93.6465",
+    "iconImage" : "https://cdn0.vox-cdn.com/thumbor/RJvy9Myzmjx40mraMmdMySxY4Jk=/800x0/filters:no_upscale()/cdn0.vox-cdn.com/uploads/chorus_asset/file/8052009/ecd6390bc0b4fb8e9d8c2f075d74d817.png",
+    "popupText" : "Iowa State Univeristy"
+}];
+
+ for (var i = 0; i < schools.length; i++) {
+
+  var sch = L.marker([schools[i].lat, schools[i].long], {
+    icon: L.icon({
+      iconUrl: schools[i].iconImage,
+      iconSize:[25, 25],
+      iconAnchor:[5, 17],
+      popupAnchor:[0, -20]
+    }),
+    title: schools[i].name
+  }).bindPopup("<b>"+schools[i].name+"</b>"+":"+schools[i].popupText+".").addTo(map);
+}
+
+
+//polyline
+var pointA = new L.LatLng(45.049270, -111.115723);
+var pointB = new L.LatLng(44.956052, -104.040527);
+var pointC = new L.LatLng(40.991820, -104.073486);
+var pointD = new L.LatLng(41.008403, -111.060791);
+var pointE = new L.LatLng(45.049270, -111.115723);
+var pointList = [pointA, pointB, pointC, pointD, pointE];
+
+var myPolyline = new L.Polyline(pointList, {
+    color: 'black',
+    weight: 2,
+    opacity: 1,
+    smoothFactor: 1
+});
+
+var chicago = L.marker([41.879020, -87.648926]).bindPopup('Chicago'),
+    detroit = L.marker([42.311085, -83.023682]).bindPopup('Detroit'),
+    cleveland    = L.marker([41.493407, -81.694336]).bindPopup('Cleveland'),
+    milwaukee    = L.marker([43.054088, -87.901611]).bindPopup('Milwaukee');
+
+var city = L.layerGroup([chicago, detroit, cleveland, milwaukee]);
+
+	var baseLayers = {
+		"Black and White Street Map": OpenStreetMapBW,
+		"Topo Map": OpenTopoMap,
+    "Street Map": OpenStreetMap,
+	};
+
+var overlayMaps = {
+      
+  "Wyoming State Border":myPolyline,
+  "Cities": city,
+  "My Trip(Geojson)": trip,
+		};
+
+
+
+
+
+L.control.layers(baseLayers,overlayMaps).addTo(map);
+
+
+
+
+</script>
+</body>
+</html>
