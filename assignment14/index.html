@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/jupavez/6/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment 14</title>
+
+
+  
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+	  
+	<script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+  
+<style id="jsbin-css">
+
+#container{
+  width: 850px;
+  height: 750px;
+  position: absolute;
+  margin: auto;
+  left:0;
+  right: 0;
+}
+#title{
+  width: 850px;
+  height: 120px;
+  text-align: center; 
+  position: absolute;
+  margin: auto;
+  background-color: lightgrey;
+  left:0;
+  right: 0;
+
+}
+#map {
+  width: 850px;
+  height: 550px;
+  background-color: grey;
+  position: absolute;
+  left:0;
+  top: 100px;
+  bottom:0;
+  right: 0;
+  margin: auto;
+
+}
+
+
+
+
+.legend {
+    line-height: 10px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+
+}
+
+</style>
+</head>
+  <div id="container">
+    <div id="title">
+  <h1>Assignment 14</h1>
+    
+  <h2>Xingwei Weng</h2> Total number of earthquakes in past day: <span id="totalNumber"></span>
+      
+    
+          
+
+ 
+    </div>
+  
+<body>
+  
+<div id="map"></div>
+  </div>
+
+
+<script id="jsbin-javascript">
+
+
+
+//basemap
+var OpenStreetMapBW = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+var OpenTopoMap = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+  var OpenStreetMap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+
+//map
+var map = L.map('map', {
+    		center: new L.LatLng(41.8780, -100.4507),
+    		zoom: 3,
+    		layers: [OpenStreetMap]
+		});
+
+map.doubleClickZoom.enable();
+
+//get color
+function getColor(d) {
+  return d >= 6 ? '#FF0000' : 
+    d >= 4 ? '#FF4D00' :
+  d >= 2 ? '#A6FF00' :
+  d >= 1 ? '#CDFF00' :
+  
+  d >= 0 ? '#3CFF00' :
+    
+    '#FFFFFF'; //white
+}
+
+var geojsonMarkerOptions = {
+
+  color: "#000",
+  weight: 1, 
+  opacity: 1,
+  fillOpacity: 0.8
+};
+
+//geojson
+url="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+
+var geojsonLayer1 = new L.GeoJSON.AJAX(url , {pointToLayer: function(feature, latlng) {
+    return new L.CircleMarker(latlng, geojsonMarkerOptions);
+  },
+  style: function(feature) {
+    return {
+      radius: feature.properties.mag * 2.5,
+      fillColor: getColor(feature.properties.mag)
+    };
+  },
+  onEachFeature: function(feature, layer) {
+    layer.bindPopup("<strong>Mag</strong>: " + feature.properties.mag + "<br> <strong>Place</strong>: " + feature.properties.place);
+  }
+}).addTo(map);
+
+
+//layers
+
+var baseLayers = {
+		"Black and White Street Map": OpenStreetMapBW,
+		"Topo Map": OpenTopoMap,
+    "Street Map": OpenStreetMap,
+	};
+
+var overlayMaps = {
+      "All Earthquakes Past Day":geojsonLayer1,
+//      "Population2010":geojsonLayer2,
+		};
+
+L.control.layers(baseLayers,overlayMaps).addTo(map);
+
+//legend
+
+var legend1 = L.control({
+  position: 'bottomleft'
+});
+
+legend1.onAdd = function(map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    mag = [ 0,1, 2, 4, 6],
+    labels = ['Weak',' ', 'Medium',' ','Strong'];
+
+	
+	 div.innerHTML += "<b>Magnitude</b><br>";
+
+  for (var i = 0; i < mag.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColor(mag[i] ) + ' "></i> ' +
+      mag[i] +' '+labels[i]+'<br>';
+  }
+
+  return div;
+};
+legend1.addTo(map);
+
+
+//count
+$.ajax({
+  url: url,
+  dataType: 'json',
+}).done(function(data) {
+
+  totalNumber = data.features.length;
+  $("#totalNumber").html(totalNumber);
+});
+
+//legend on/off
+map.on('overlayremove', function (eventLayer) {
+	console.log(eventLayer.name  + " off");
+	if (eventLayer.name == "All Earthquakes Past Day") {
+		this.removeControl(legend1);
+	}
+});
+
+map.on('overlayadd', function (eventLayer) {
+	console.log(eventLayer.name + " on");
+	if (eventLayer.name == "All Earthquakes Past Day") {
+		 legend1.addTo(this);
+
+	}	
+});
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+
+</html>
