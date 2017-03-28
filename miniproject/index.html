@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/jupavez/9/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Mini Project</title>
+
+
+  
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+	  
+	<script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+  
+<style id="jsbin-css">
+
+#container{
+  width: 1000px;
+  height: 800px; 
+  position: absolute;
+  margin: auto;
+  left:0;
+  right: 0;
+}
+#title{
+  width: 1000px;
+  height: 120px;
+  text-align: center; 
+  position: absolute;
+  margin: auto;
+  background-color: lightgrey;
+  left:0;
+  right: 0;
+
+}
+#nav1{
+  width: 500px;
+  height: 50px;
+  background-color: #f0f0f0;
+  position: absolute;
+  left:0;
+  top: 120px;
+  bottom:0;
+
+  
+}
+
+#nav2{
+  width: 500px;
+  height: 50px;
+  background-color: #f0f0f0;
+  position: absolute;
+  
+  top: 120px;
+  bottom:0;
+  right: 0;
+  
+}
+
+#map {
+  width: 1000px;
+  height: 630px;
+  background-color: grey;
+  position: absolute;
+  left:0;
+  top: 170px;
+  bottom:0;
+  right: 0;
+
+
+}
+
+
+
+
+.legend {
+    line-height: 10px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+
+}
+
+
+
+.legend u {
+    width: 18px;
+    height: 2px;
+    float: left;
+    margin-right: 8px;
+  margin-top: 8px;
+    opacity: 0.9;
+}
+
+
+
+</style>
+</head>
+  <div id="container">
+    <div id="title">
+  <h1>Mini Project</h1>
+    
+  <h2>Xingwei Weng</h2>
+     <div id= "nav1"> Click to zoom to Iowa<br><button id="iowa"> Iowa</button></div>
+   <div id= "nav2"> Click to zoom to Story County<br><button id="story"> Story County</button></div>
+  </div>
+
+<body>
+  
+<div id="map"></div>
+  </div>
+<script id="jsbin-javascript">
+
+
+
+//basemap
+var OpenStreetMapBW = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+var OpenTopoMap = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+  var OpenStreetMap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+
+//map
+var map = L.map('map', {
+    		center: new L.LatLng(41.8780, -93.4507),
+    		zoom: 7,
+    		layers: [OpenStreetMap]
+		});
+
+
+//get color
+function getColor(d) {
+  return d <= '5000' ? '#9F0410' :
+    d <= '10000' ? "#CF412E" :
+   d <= '20000' ? "#F57146" :
+    d <= '40000' ? "#14049F" :
+    d <= '80000' ? "#253CBB" :
+  d <= '160000' ? "#3B87E2" :
+  d <= '320000' ? "#4DC0FF" :
+  d <= '640000' ? "grey" :
+    "#FFFFFF"; //white
+}
+
+function getColor3(d) {
+  return d <= '10' ? '#fff7ec' :
+    d <= '50' ? "#fee8c8" :
+   d <= '100' ? "#fdd49e" :
+    d <= '200' ? "#fdbb84" :
+    d <= '400' ? "#fc8d59" :
+  d <= '800' ? "#ef6548" :
+  d <= '1600' ? "#d7301f" :
+  d <= '3200' ? "#b30000" :
+  d > '3200' ? "#7f0000" :
+    "#FFFFFF"; //white
+}
+
+function getColor5(d) {
+  return d == '1' ? '#67000d' :
+    d == '6' ? "#238443" :
+    "#FFFFFF"; //white
+}
+
+
+
+
+
+function style2(feature) {
+    return {
+        fillColor: getColor(feature.properties.POP2010),
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '2',
+        fillOpacity: 0.7
+    };
+}
+
+function style3(feature) {
+    return {
+        fillColor: getColor3(feature.properties.POPDENSQMI),
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '2',
+        fillOpacity: 0.7
+    };
+  
+}
+
+
+function style4(feature) {
+    return {
+        weight: 1,
+        opacity: 1,
+        color: 'blue',
+        fillOpacity: 0.7
+    };
+  
+}
+
+function style5(feature) {
+    return {
+        color: getColor5(feature.properties.JURISDIC),
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 1
+    };
+  
+}
+
+
+
+//geojson
+url="https://bestlukcy.github.io/LA558/countydata.json";
+url3="https://bestlukcy.github.io/LA558/data/census.json?";
+url4="https://bestlukcy.github.io/LA558/data/river_story.json";
+url5="https://bestlukcy.github.io/LA558/data/roads_story.json";
+
+
+var geojsonLayer2 = new L.GeoJSON.AJAX(url , {
+	style: style2,
+	onEachFeature: function (feature, layer) {
+        htmlText = "<strong>" + feature.properties.NAME+ "</strong><br>Population 2010: <b>"  + feature.properties.POP2010 + "</b><br>Population 2000: <b>"  + feature.properties.POP2000 + "</b><br> RUCC 2013: <b>"  + feature.properties.RUCC_2013 + "</b>";
+        layer.bindPopup(htmlText);
+		layer.bindTooltip(feature.properties.NAME);
+    }
+}).addTo(map);
+//census_story
+var geojsonLayer3 = new L.GeoJSON.AJAX(url3 , {
+	style: style3,
+	onEachFeature: function (feature, layer) {
+        htmlText = "Population:" + feature.properties.POP100 + "<br>Area(sqmi):" + feature.properties.LAND_SQ_MI + "<br> Population Density (pop/sqmi):" + feature.properties.POPDENSQMI ;
+        layer.bindPopup(htmlText);
+		layer.bindTooltip(feature.properties.NAME);
+    }
+}).addTo(map);
+//rivers
+var geojsonLayer4 = new L.GeoJSON.AJAX(url4 , {
+	style: style4,
+	onEachFeature: function (feature, layer) {
+        htmlText = "Name:"+ feature.properties.PNAME + "<br>Length(ft):" +feature.properties.LENGTH;
+        layer.bindPopup(htmlText);
+		layer.bindTooltip(feature.properties.PNAME);
+    }
+}).addTo(map);
+
+//roads
+var geojsonLayer5 = new L.GeoJSON.AJAX(url5 , {
+	style: style5,
+	onEachFeature: function (feature, layer) {
+        htmlText = "Name:"+ feature.properties.NINEONEONE + "<br>Number of lanes:" +feature.properties.NUMLANES;
+        layer.bindPopup(htmlText);
+		layer.bindTooltip(feature.properties.NINEONEONE);
+    }
+}).addTo(map);
+
+
+//layers
+
+var baseLayers = {
+		"Black and White Street Map": OpenStreetMapBW,
+		"Topo Map": OpenTopoMap,
+    "Street Map": OpenStreetMap,
+	};
+
+var overlayMaps = {
+//      "Population2000":geojsonLayer1,
+      "Population2010":geojsonLayer2,
+ "Census Story County":geojsonLayer3,
+  "Rivers Story County":geojsonLayer4,
+  "Roads Story County": geojsonLayer5,
+		};
+
+L.control.layers(baseLayers,overlayMaps).addTo(map);
+
+//legend
+
+
+
+var legend2 = L.control({
+  position: 'bottomleft'
+});
+
+legend2.onAdd = function(map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    POP2010 = [5000, 10000, 20000, 40000, 80000, 160000, 320000, 640000],
+    labels = [''];
+
+	
+	 div.innerHTML += "<b>Population in 2010</b><br>";
+
+  for (var i = 0; i < POP2010.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColor(POP2010[i] ) + ' "></i> ' +
+      POP2010[i] +' '+'<br>';
+  }
+
+  return div;
+};
+legend2.addTo(map);
+
+var legend3 = L.control({
+  position: 'bottomleft'
+});
+
+legend3.onAdd = function(map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    POPDENSQMI = [10, 50, 100, 200, 400, 800, 1600, 3200],
+    labels = [''];
+
+	
+	 div.innerHTML += "<b>Population Density</b><br>";
+
+  for (var i = 0; i < POPDENSQMI.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColor3(POPDENSQMI[i] ) + ' "></i> ' +
+      POPDENSQMI[i] +' '+'<br>';
+  }
+
+  return div;
+};
+legend3.addTo(map);
+
+
+var legend5 = L.control({
+  position: 'bottomleft'
+});
+
+legend5.onAdd = function(map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    JURISDIC = [1, 6],
+    labels = ['State Route','County Route'];
+
+	
+	 div.innerHTML += "<b>Roadway</b><br>";
+
+  for (var i = 0; i < JURISDIC.length; i++) {
+    div.innerHTML +=
+      '<u style="background:' + getColor5(JURISDIC[i] ) + ' "></u> ' +
+      labels[i] +' '+'<br>';
+  }
+
+  return div;
+};
+legend5.addTo(map);
+
+
+
+
+// Add and remove legend from layers when selected in control
+map.on('overlayremove', function (eventLayer) {
+	console.log(eventLayer.name  + " off");
+	if (eventLayer.name == "Census Story County") {
+		this.removeControl(legend3);
+	}else if (eventLayer.name == "Population2010"){
+		this.removeControl(legend2);
+	}else if (eventLayer.name == "Roads Story County"){
+		this.removeControl(legend5);
+	}
+});
+
+map.on('overlayadd', function (eventLayer) {
+	console.log(eventLayer.name + " on");
+	if (eventLayer.name == "Census Story County") {
+		 legend3.addTo(this);
+	}else if (eventLayer.name == "Population2010"){
+		 legend2.addTo(this);
+	}else if (eventLayer.name == "Roads Story County"){
+		 legend5.addTo(this);
+	}	
+});
+
+
+$(document).ready(function (){
+  
+  $('#iowa').click(function(){
+    map.setView([41.8780, -93.4507],7);
+    });
+  $('#story').click(function(){
+    map.setView([42.032393, -93.502358],10.5);
+    });
+});
+</script>
+</body>
+
+</html>
