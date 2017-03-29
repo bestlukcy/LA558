@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by profSeeger (http://jsbin.com/sihokav/5/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="en">
+
+<head>
+
+<meta name="description" content="LA 458/558 19e Leaflet awesome markers and filters via promises">
+    <meta charset="utf-8">
+	
+	<!--External CSS-->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="http://129.186.142.145/indicators/classes/leaflet-awesome-markers/dist/leaflet.awesome-markers.css">
+	
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	
+	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+	
+	
+	<!--External JS-->	
+	<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+	
+
+   <script src="http://129.186.142.145/indicators/classes/leaflet-awesome-markers/dist/leaflet.awesome-markers.js"></script>
+
+
+<style id="jsbin-css">
+    #map {
+        width: 600px;
+        height: 400px;
+    }
+    /* This is new */
+    
+    button {
+        width: 100px;
+    }
+</style>
+</head>
+
+<body>
+	 <div id="map"></div>
+	
+    <div class="btn-group">
+        <button type="button" id="allRecreation" class="btn btn-success">All Rec. </button>
+        <button type="button" id="golf" class="btn btn-success">Golf</button>
+        <button type="button" id="soccer" class="btn btn-success">Soccer</button>
+		<button type="button" id="softball" class="btn btn-success">Softball</button>
+    </div>
+
+   
+
+<script id="jsbin-javascript">
+console.clear();
+
+var golfIcon = L.AwesomeMarkers.icon({
+  prefix: 'glyphicon', //bootstrap
+  markerColor: 'white', // see colors above
+  iconColor: 'green',
+  icon: 'flag' 
+});
+	
+
+var soccerIcon = L.AwesomeMarkers.icon({
+  prefix: 'fa', //font awesome rather than bootstrap
+  markerColor: 'red', // see colors above
+  icon: 'fa-futbol-o' //http://fortawesome.github.io/Font-Awesome/icons/
+});
+
+var softballIcon = 	L.AwesomeMarkers.icon({
+	 prefix: 'ion',  //ionicons.com 
+  markerColor: 'purple',
+  icon: 'ion-flag'
+});
+
+
+var map = L.map('map').setView([42.0, -93.0], 12);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  attribution: 'ISUEO GIS',
+  maxZoom: 18
+}).addTo(map);
+
+
+
+var promise = $.getJSON("https://profseeger.github.io/LA558/data/amesRecreation.json");
+promise.then(function(data) {
+
+  //var allRecreation1 = L.geoJson(data);
+	
+  var golf = L.geoJson(data, {
+    filter: function(feature, layer) {
+      return feature.properties.sport == "golf";
+    },
+    pointToLayer: function(feature, latlng) {
+      return L.marker(latlng, {
+        icon: golfIcon
+      }).on('mouseover', function() {
+        this.bindPopup(feature.properties.sport).openPopup();
+      });
+    }
+  });
+
+
+
+  var soccer = L.geoJson(data, {
+    filter: function(feature, layer) {
+      return feature.properties.sport == "soccer";
+    },
+    pointToLayer: function(feature, latlng) {
+      return L.marker(latlng, {
+        icon: soccerIcon
+      }).on('mouseover', function() {
+        this.bindPopup(feature.properties.sport).openPopup();
+      });
+    }
+  });
+
+
+  var softball = L.geoJson(data, {
+    filter: function(feature, layer) {
+      return feature.properties.sport == "softball";
+    },
+    pointToLayer: function(feature, latlng) {
+      return L.marker(latlng, {
+        icon: softballIcon
+      }).on('mouseover', function() {
+        this.bindPopup(feature.properties.sport).openPopup();
+      });
+    }
+  });
+
+
+
+
+        var allRecreation = L.geoJson(data, {
+            filter: function(feature, layer) {
+                return feature.properties.sport != "zzzzzz";
+            },
+            pointToLayer: function(feature, latlng) {
+                return L.marker(latlng, {
+                }).on('click', function() {
+                    this.bindPopup(feature.properties.sport).openPopup();
+                });
+            }
+        });
+
+
+
+  map.fitBounds(allRecreation.getBounds(), {
+    padding: [50, 50]
+  });
+	
+	
+  //allRecreation.addTo(map);
+  golf.addTo(map);
+  soccer.addTo(map);
+  softball.addTo(map);
+//allRecreation1.addTo(map);
+
+  $("#allRecreation").click(function() {
+    //map.addLayer(allRecreation);
+    map.addLayer(golf);
+    map.addLayer(soccer);
+    map.addLayer(softball);
+  });
+  $("#golf").click(function() {
+    map.addLayer(golf);
+    map.removeLayer(soccer);
+    map.removeLayer(softball);
+  });
+
+  $("#soccer").click(function() {
+    map.removeLayer(golf);
+    map.addLayer(soccer);
+    map.removeLayer(softball);
+  });
+
+  $("#softball").click(function() {
+    map.removeLayer(golf);
+    map.removeLayer(soccer);
+    map.addLayer(softball);
+  });
+});
+
+
+</script>
+</body>
+
+</html>
