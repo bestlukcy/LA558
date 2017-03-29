@@ -17,10 +17,7 @@ Released under the MIT license: http://jsbin.mit-license.org
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	
 	<link rel="stylesheet" href="http://129.186.142.145/indicators/classes/leaflet-awesome-markers/dist/leaflet.awesome-markers.css">
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  
-  	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
-  
+
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> 
   
 <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
@@ -30,7 +27,6 @@ Released under the MIT license: http://jsbin.mit-license.org
   	<script src="https://indicator.extension.iastate.edu/classes/Leaflet.pattern-master/dist/leaflet.pattern-src.js"></script>
      <script src="https://bestlukcy.github.io/LA558/leaflet.awesome.markers/leaflet.awesome-markers.js"></script>
        <script src="https://bestlukcy.github.io/LA558/leaflet.awesome.markers/leaflet.awesome-markers.min.js"></script>
-     <script src="http://129.186.142.145/indicators/classes/leaflet-awesome-markers/dist/leaflet.awesome-markers.js"></script>
 <style id="jsbin-css">
 
 #container{
@@ -285,22 +281,22 @@ legend2.addTo(map);
 
 
 
-var hostipalicon1 = 	L.AwesomeMarkers.icon({
+var hostipalicon1 = L.AwesomeMarkers.icon({
 	 prefix: 'fa',   
   markerColor: 'red',
-  icon: 'fa-plus-square'
+  icon: 'fa-plus'
 });
 
 var hostipalicon2 = 	L.AwesomeMarkers.icon({
 	 prefix: 'fa',   
   markerColor: 'orange',
-  icon: 'fa-plus-square'
+  icon: 'fa-plus'
 });
 
 var hostipalicon3 = 	L.AwesomeMarkers.icon({
 	 prefix: 'fa',   
   markerColor: 'green',
-  icon: 'fa-plus-square'
+  icon: 'fa-plus'
 });
 
 var promise = $.getJSON("https://bestlukcy.github.io/LA558/data/hospital.json");
