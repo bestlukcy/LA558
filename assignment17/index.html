@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/xemecuz/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  <title>Assignment 17</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+  <div id=container>
+    <div id=title>
+  <h1>Assignment 17</h1>
+  <h3>Xingwei Weng</h3>  Enter the address:<input type="text" id="myaddress"
+                           <br>
+  <button type="button" id="geocode"> Click Me</button>
+    </div>
+<style id="jsbin-css">
+#container{
+  width: 850px;
+  height: 750px;
+  position: absolute;
+  margin: auto;
+  left:0;
+  right: 0;
+}
+#title{
+  width: 850px;
+  height: 120px;
+  text-align: center; 
+  position: absolute;
+  margin: auto;
+  background-color: lightgrey;
+  left:0;
+  right: 0;
+
+}
+#map {
+  width: 850px;
+  height: 550px;
+  background-color: grey;
+  position: absolute;
+  left:0;
+  top: 100px;
+  bottom:0;
+  right: 0;
+  margin: auto;
+
+}
+</style>
+</head>
+<body>
+
+  <br>
+  <div id="map"></div>
+  </div>
+<script id="jsbin-javascript">
+		var map = L.map('map').setView([42,-93.6],12);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+		    maxZoom: 18,
+		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+		  }).addTo(map);
+
+$('#geocode').click(function (){
+  myaddress = encodeURI($('#myaddress').val());
+  
+  var apiurl = "http://maps.googleapis.com/maps/api/geocode/json?address=" + myaddress + "&sensor=true";
+
+  
+  console.log(apiurl);
+  
+  $.getJSON(apiurl, function(json){
+    
+    
+    var address = json.results[0].formatted_address;
+    var lat = json.results[0].geometry.location.lat;
+    var long = json.results[0].geometry.location.lng;
+        console.log(address);
+        console.log(lat);
+        console.log(long);
+
+
+    
+    var county='';
+        $.each(json.results[0].address_components, function (i, jsonData) {
+            level = jsonData.types[0];
+            if ('administrative_area_level_2' === level.toLowerCase()) {
+                county = (jsonData.short_name);
+            }
+        });
+
+    console.log(county);
+    
+        var township='';
+        $.each(json.results[0].address_components, function (i, jsonData) {
+            level = jsonData.types[0];
+            if ('administrative_area_level_3' === level.toLowerCase()) {
+                township = (jsonData.short_name);
+            }
+        });
+    
+    
+    
+    
+var marker = L.marker([lat, long], {
+            draggable: false,
+            title: address,
+            opacity: 1
+        }).addTo(map);
+    
+  lat = Math.floor(lat*1000+0.5)/1000;
+    long=Math.floor(long*1000+0.5)/1000;
+    
+    marker.bindPopup("County: " + county + "<br> Lat: " + lat + "<br>Lon: " + long + "<br>Township: " + township).openPopup();
+    
+    map.setView([lat, long]);
+
+    
+});
+});
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</script>
+</body>
+</html>
