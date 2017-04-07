@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/womeci/5/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+  
+<head>
+<meta name="description" content="LA 458/558 Assingment 18">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment 18</title>
+	
+
+<!--External Data-->	
+<script src="https://indicator.extension.iastate.edu/z_cjs/teachingGIS/webGIS_17/studentFeaturesDB.php?userID=xweng&theFunction=responseVar"></script>
+	
+
+	
+<!--External CSS-->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="http://129.186.142.145/indicators/classes/leaflet-awesome-markers/dist/leaflet.awesome-markers.css">
+	
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	
+	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+	
+	
+	<!--External JS-->	
+	<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+	
+
+   <script src="http://129.186.142.145/indicators/classes/leaflet-awesome-markers/dist/leaflet.awesome-markers.js"></script>	
+	
+		<script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+   <div id=container>
+	<div id=title>
+  <h1>Assignment 18</h1>
+  <h2>Xingwei Weng</h2>
+    
+    <div id =context>
+      
+    Category(building;food;red): <input id = 'field1'> 
+	Title: <input id = 'field2'> 
+	Text: <input id = 'field3'> <br>
+	<input type="checkbox" id="addMarkReady" value="X"> Ready to add marker on map click<br>
+    </div>
+	
+	
+  </div>
+	
+	
+<style id="jsbin-css">
+#container{
+  width: 850px;
+  height: 750px;
+  position: absolute;
+  margin: auto;
+  left:0;
+  right: 0;
+}
+#title{
+  width: 850px;
+  height: 120px;
+  text-align: center; 
+  position: absolute;
+  margin: auto;
+  background-color: lightgrey;
+  left:0;
+  right: 0;
+
+}
+
+#context{
+  width: 850px;
+  height: 80px;
+  background-color: lightgrey;
+  position: absolute;
+  left:0;
+  top: 200px;
+  bottom:0;
+  right: 0;
+  margin: auto;
+
+}
+#map {
+  width: 850px;
+  height: 550px;
+  background-color: grey;
+  position: absolute;
+  left:0;
+  top: 200px;
+  bottom:0;
+  right: 0;
+  margin: auto;
+
+}
+</style>
+</head>
+<body>
+ 
+
+	
+	
+<div id="map"></div>
+    
+  </div>
+<script id="jsbin-javascript">
+console.clear();
+
+var userID = 'xweng';
+
+//get the existing data from the server by adding the following in the <head>
+
+//or you can use the URL below and the leaflet ajax plugin
+
+var responseURL = "https://indicator.extension.iastate.edu/z_cjs/teachingGIS/webGIS_17/studentFeaturesDB.php?userID=" + userID + "&theFunction=response";
+
+console.log(responseURL);
+
+
+var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+});
+
+
+var map = L.map('map').setView([42.0, -93.634], 7);
+osm.addTo(map);
+map.on('click', addMarker);
+
+
+
+
+//Add the marker to the map and DB
+function addMarker(e) {
+
+
+
+  if ($("#addMarkReady").is(':checked')) {
+
+    field1 = $("#field1").val();
+    field2 = $("#field2").val();
+    field3 = $("#field3").val();
+    // Add marker to map at click location; add popup window
+    var newMarker = new L.marker(e.latlng)
+      .bindPopup("<strong>" + field2 + "</strong><br>" + field3)
+      .bindTooltip(field1)
+      .addTo(map);
+
+    latitude = e.latlng.lat;
+    longitude = e.latlng.lng;
+
+    var myData = "field1=" + field1 + "&field2=" + field2 + "&field3=" + field3 + "&latitude=" + latitude + "&longitude=" + longitude;
+
+    jQuery.ajax({
+      type: "POST", // HTTP method POST or GET
+      url: "https://indicator.extension.iastate.edu/z_cjs/teachingGIS/webGIS_17/studentFeaturesDB.php?userID=xweng&theFunction=insert", //Where to make Ajax calls
+      dataType: "text", // Data type, HTML, json etc.
+      data: myData, //Form variables
+      success: function(response) {
+        //console.log(response);
+
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        console.log(thrownError);
+      }
+
+    }); //end ajax post
+
+
+  }
+
+
+}
+
+
+
+
+
+//Load existing points as circles from var locations. This is initially loaded in a <head><script>
+var geojsonLayer1 = L.geoJSON(locations, {
+  pointToLayer: function(feature, latlng) {
+    return L.circleMarker(latlng, {
+      radius: 5,
+      fillColor: "yellow",
+      color: "#000",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+    }).bindPopup(feature.properties.field1).openPopup();
+  }
+}).addTo(map);
+
+
+
+
+//*******OR directly via the Leaflet AJAX plugin**************
+
+
+var geojsonLayer2 = new L.GeoJSON.AJAX(responseURL, {
+  pointToLayer: function(feature, latlng) {
+    return new L.CircleMarker(latlng, {
+      stroke: true,
+      weight: 2, //stroke weight
+      color: '#000000', //stroke color
+      opacity: 1.0, //stoke opacity
+      fillColor: 'blue',
+      fillOpacity: 0.5,
+      radius: 12
+    }).bindPopup(feature.properties.field2).openPopup();
+  }
+});
+
+
+
+//*******OR as icons**************
+
+
+
+var foodicon = L.AwesomeMarkers.icon({
+  prefix: 'fa', //bootstrap
+  markerColor: 'white', // see colors above
+  iconColor: 'green',
+  icon: 'fa-cutlery'
+});
+
+var buidicon = L.AwesomeMarkers.icon({
+  prefix: 'fa', //font awesome rather than bootstrap
+  markerColor: 'blue',
+  icon: 'fa-building-o',
+  
+});
+
+var greenIcon = L.AwesomeMarkers.icon({
+  prefix: 'fa',
+  markerColor: 'green',
+  
+});
+
+var redIcon = L.AwesomeMarkers.icon({
+  prefix: 'fa',
+  markerColor: 'red',
+  icon: 'fa-plus-square'
+});
+
+
+
+
+
+// var version loading in specified icons
+var geojsonLayer1b = L.geoJSON(locations, {
+  pointToLayer: function(feature, latlng) {
+    return L.marker(latlng, {
+        icon: foodicon
+      })
+      .on('mouseover', function() {
+        this.bindPopup(feature.properties.field1).openPopup();
+      });
+  }
+});
+
+
+
+
+
+function getIcon(d) {
+  return d == 'buiding' ? buidicon :
+    d == 'food' ? foodicon :
+    d == 'red' ? redIcon :
+    greenIcon;
+}
+
+var geojsonLayer2b = new L.GeoJSON.AJAX(responseURL, {
+  pointToLayer: function(feature, latlng) {
+    return L.marker(latlng, {
+        icon: getIcon(feature.properties.field1)
+      })
+      .on('mouseover', function() {
+        this.bindPopup("<strong>" + feature.properties.field2 + "</strong><br>" + feature.properties.field3).openPopup();
+      });
+  }
+}).addTo(map);
+
+
+var iowaborder = new L.GeoJSON.AJAX(url="https://bestlukcy.github.io/LA558/data/Iowa_border.json", {
+}).addTo(map);
+
+
+
+
+
+//******************
+
+//layer Control
+
+var baseMaps = {
+  "OSM": osm,
+};
+
+var overlayMaps = {
+  "Loaded as variable": geojsonLayer1,
+  "Loaded as variable & icons": geojsonLayer1b,
+  "Loaded with plugin": geojsonLayer2,
+  "Loaded with plugin & icons": geojsonLayer2b,
+  "Iowa Border": iowaborder,
+};
+
+
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+</script>
+</body>
+</html>
