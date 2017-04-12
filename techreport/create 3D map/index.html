@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/gasopel/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Create 3D Map</title>
+  
+  <link rel="stylesheet" href="https://js.arcgis.com/4.3/esri/css/main.css">
+<script src="https://js.arcgis.com/4.3/"></script>
+  
+  
+<style id="jsbin-css">
+  html, body, #map {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+  <div id = "map"></div>
+<script id="jsbin-javascript">
+
+  // Create map
+require([
+  "esri/Map",//create map
+  "esri/views/SceneView", //allow to view map in 3D
+  "dojo/domReady!" //ensure the DOM is available before executing code
+], function(Map, SceneView) {
+ var map = new Map({
+    basemap: "hybrid", //satellite, streets, topo, gray, dark-gray, oceans, osm,  national-geographic
+    ground: "world-elevation" //property of map
+  });
+//create 3D view  
+  var view = new SceneView({
+    container: "map",  
+    map: map  // 
+  });
+});
+
+</script>
+</body>
+</html>
