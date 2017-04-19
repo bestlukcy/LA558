@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by bestlukcy (http://jsbin.com/mojeci/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta name="description" content="Assignment 20">
+  <meta charset="utf-8">
+
+  <title>Assignment 21</title>
+
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+	<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+     <script src="https://bestlukcy.github.io/LA558/leaflet.awesome.markers/leaflet.awesome-markers.js"></script>	
+       <div id=container>
+	<div id=title>
+    <h1>Hostipal Locations in Iowa</h1>
+    
+  <h2>Assignment 21<br>Xingwei Weng</h2>
+       </div>
+<style id="jsbin-css">
+#container{
+  width: 850px;
+  height: 750px;
+  position: absolute;
+  margin: auto;
+  left:0;
+  right: 0;
+}
+#title{
+  width: 850px;
+  height: 150px;
+  text-align: center; 
+  position: absolute;
+  margin: auto;
+  background-color: grey;
+  left:0;
+  right: 0;
+
+}
+
+
+#map {
+  width: 850px;
+  height: 580px;
+  background-color: grey;
+  position: absolute;
+  left:0;
+  top: 120px;
+  bottom:0;
+  right: 0;
+  margin: auto;
+
+}
+h1,h2{
+  color:black;
+}
+</style>
+</head>
+<body>
+      <div id =context>
+
+  
+  </div>
+  <div id ="map"></div>
+  </div>
+<script id="jsbin-javascript">
+var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+});
+
+
+var mymap=L.tileLayer('https://api.mapbox.com/styles/v1/xweng0421/cj1od8jp7000g2rlbemg7w2i6/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoieHdlbmcwNDIxIiwiYSI6ImNqMWg5amE3YzAwOHEycXFlZDlobHR1eTcifQ.6xN3BIUVlkgxZuwQfZrM1A');
+
+
+
+var map = L.map('map', {
+    center: [42.0, -93.634],
+    zoom: 7,
+    layers: [mymap]
+});
+
+
+var baseMaps = {
+    "OpenStreetMap": osm,
+	"My Map":mymap,
+};
+
+var overlayMaps = {
+};
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+
+
+
+</script>
+</body>
+</html>
